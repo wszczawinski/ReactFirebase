@@ -88,19 +88,18 @@ class SignUpFormBase extends Component {
                 <button disabled={isInvalid} type="submit">
                     Sign Up
                 </button>
-                
-                {error && <p>{error.message}</p>}
 
+                {error && <p>{error.message}</p>}
             </form>
-        )
+        );
     }
 }
 
 const SignUpLink = () => (
     <p>
-        Dont have an account? <Link to={ROUTES.SIGN_UP}>Sign up</Link>
+        Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
     </p>
-)
+);
 
 const SignUpForm = withRouter(withFirebase(SignUpFormBase));
 
