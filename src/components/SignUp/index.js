@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
-import { Link, Route, withRouter } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 
-import { withFirebase } from '../Firebase'
-import * as ROUTES from '../../constants/routes'
+import { withFirebase } from '../Firebase';
+import * as ROUTES from '../../constants/routes';
 
 const SignUpPage = () => (
     <div>
         <h1>SignUp</h1>
         <SignUpForm />
     </div>
-)
+);
 
 const INITIAL_STATE = {
     username: '',
@@ -17,48 +17,44 @@ const INITIAL_STATE = {
     passwordOne: '',
     passwordTwo: '',
     error: null
-}
+};
 
 class SignUpFormBase extends Component {
     constructor(props) {
-        super(props)
+        super(props);
 
-        this.state={ ...INITIAL_STATE }
+        this.state = { ...INITIAL_STATE };
     }
 
-    onSubmit = e => {
+    onSubmit = event => {
         const { username, email, passwordOne } = this.state;
+
         this.props.firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
             .then(authUser => {
                 this.setState({ ...INITIAL_STATE });
+                this.props.history.push(ROUTES.HOME);
             })
             .catch(error => {
                 this.setState({ error });
             });
-            
-        e.preventDefault();
-    }
 
-    onChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-    }
+        event.preventDefault();
+    };
+
+    onChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
 
     render() {
-        const {
-            username,
-            email,
-            passwordOne,
-            passwordTwo,
-            error
-        } = this.state;
+        const { username, email, passwordOne, passwordTwo, error } = this.state;
 
-        const isInvalid = 
-            passwordOne !== passwordTwo || 
+        const isInvalid =
+            passwordOne !== passwordTwo ||
             passwordOne === '' ||
             email === '' ||
             username === '';
-            
+
         return (
             <form onSubmit={this.onSubmit}>
                 <input
